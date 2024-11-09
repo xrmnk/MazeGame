@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.11.35327.3
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MazeGame", "MazeGame\MazeGame.csproj", "{F177342E-23BE-4A1F-99DF-7EF11B2A6B7C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MazeGame.Generators", "MazeGame.Generators\MazeGame.Generators.csproj", "{EAE76B1B-C196-43C7-91FF-7919EC7AA1C6}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F177342E-23BE-4A1F-99DF-7EF11B2A6B7C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F177342E-23BE-4A1F-99DF-7EF11B2A6B7C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F177342E-23BE-4A1F-99DF-7EF11B2A6B7C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F177342E-23BE-4A1F-99DF-7EF11B2A6B7C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EAE76B1B-C196-43C7-91FF-7919EC7AA1C6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EAE76B1B-C196-43C7-91FF-7919EC7AA1C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EAE76B1B-C196-43C7-91FF-7919EC7AA1C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EAE76B1B-C196-43C7-91FF-7919EC7AA1C6}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {96B2271C-DA8A-45CA-9C0B-08EB1760854D}
+	EndGlobalSection
+EndGlobal
