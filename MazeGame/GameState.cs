@@ -9,7 +9,7 @@ namespace MazeGame;
 public class GameState
 {
 	public const int MinLevel = 1;
-	public const int MaxLevel = 4;
+	public const int MaxLevel = 5;
 
 	private const string StateFileName = "state.json";
 

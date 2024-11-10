@@ -2,8 +2,6 @@
 {
 	public interface IMazeGenerator
 	{
-		void Initialize(int[,] grid, int dimension);
-
-		void Generate();
+		void Generate(int[,] grid, int dimension, (int x, int y) startingPoint);
 	}
 }

@@ -2,64 +2,53 @@
 
 namespace MazeGame.Generators;
 
+/// <summary>
+/// A kind of recursive backtracker algorithm which moves 2 cells at time in random direction and carves its way if possible
+/// therefore works best with odd dimensions to draw border
+/// </summary>
 public class RecursiveBacktrackGenerator : IMazeGenerator
 {
 	private int[,]? _grid;
 	private int _dimension;
 	private Random _random = new();
 
-	public void Initialize(int[,] grid, int dimension)
+	/// <summary>
+	/// Generate the maze in given grid, of given dimension and with given starting point
+	/// </summary>
+	public void Generate(int[,] grid, int dimension, (int x, int y) startingPoint)
 	{
+		Guard.Against.Null(grid);
+		Guard.Against.OutOfRange(dimension, nameof(dimension), 2, 10240);
+
 		_dimension = dimension;
 		_grid = grid;
-
+		// if randomness would be an issue, we could use RNGCryptoServiceProvider, but I think it'll do for now.
 		_random = new Random(DateTime.Now.Millisecond);
+
+		GenerateInternal(startingPoint.x, startingPoint.y);
 	}
-
-	public void Generate()
-	{
-		Guard.Against.Null(_grid, "Generator has not been initialized.");
-		Guard.Against.Expression(d => d <= 0, _dimension, "Generator has not been initialized.");
-
-		GenerateInternal(0, 0);
-	}
-
 
 	private void GenerateInternal(int x, int y)
 	{
-		// Directions (right, down, left, up)
 		var directions = new List<(int dx, int dy)>
 		{
 			(1, 0), (0, 1), (-1, 0), (0, -1)
 		};
-		directions.Shuffle(_random); // Randomize directions
+		directions.Shuffle(_random);
 
 		foreach (var (dx, dy) in directions)
 		{
+			// take cell skipping one in a random direction
 			var nx = x + dx * 2;
 			var ny = y + dy * 2;
 
-			if (IsInBounds(nx, ny) && _grid[nx, ny] == 0)
+			// if the cell is within the grid and it is the "wall", then let's carve the way and recurse from here
+			if ((nx, ny).WithinBounds(_dimension) && _grid[nx, ny] == Constants.Wall)
 			{
 				_grid[x + dx, y + dy] = Constants.Empty;
 				_grid[nx, ny] = Constants.Empty;
 				GenerateInternal(nx, ny);
 			}
-		}
-	}
-
-	private bool IsInBounds(int x, int y) =>
-		x >= 0 && y >= 0 && x < _dimension && y < _dimension;
-}
-
-public static class Extensions
-{
-	public static void Shuffle<T>(this IList<T> list, Random rng)
-	{
-		for (var i = list.Count - 1; i > 0; i--)
-		{
-			var swapIndex = rng.Next(i + 1);
-			(list[i], list[swapIndex]) = (list[swapIndex], list[i]);
 		}
 	}
 }

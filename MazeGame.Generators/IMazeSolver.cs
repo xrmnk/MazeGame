@@ -2,7 +2,5 @@
 
 public interface IMazeSolver
 {
-	void Initialize(int[,] grid, int dimension);
-
-	List<(int, int)> Solve();
+	List<(int, int)> Solve(int[,] grid, int dimension, (int x, int y) startingPoint, (int x, int y) targetCoordinates);
 }

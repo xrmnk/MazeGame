@@ -9,11 +9,11 @@ namespace MazeGame;
 /// </summary>
 public class Maze(IServiceProvider serviceProvider)
 {
-	private const string IconWall = "\u2588"; // 🧱
+	private const string IconWall = "\u2588";
 	private const string IconEmpty = " ";
-	private const string IconFinish = "\u2691"; // 🚪
-	private const string IconPlayer = "@"; // 😐
-	private const string IconSolution = "."; // 👣
+	private const string IconFinish = "\u2691";
+	private const string IconPlayer = "@";
+	private const string IconSolution = ".";
 	private const ConsoleColor ColorWall = ConsoleColor.DarkGray;
 	private const ConsoleColor ColorEmpty = ConsoleColor.Black;
 	private const ConsoleColor ColorFinish = ConsoleColor.Green;
@@ -24,17 +24,23 @@ public class Maze(IServiceProvider serviceProvider)
 	private readonly IMazeSolver _solver = serviceProvider.GetRequiredService<IMazeSolver>();
 	private int[,]? _grid;
 	private int _dimension;
+	private List<(int, int)>? _solution;
 
-	private (int row, int column) FinishCoordinates => (_dimension - 2, _dimension - 2);
+	private (int row, int column) TargetCoordinates
+	{
+		get
+		{
+			Guard.Against.Expression(x => x <= 0, _dimension, "Please generate the maze first.");
+			return (_dimension - 2, _dimension - 2);
+		}
+	}
 
 	public void Generate(int dimension)
 	{
 		_dimension = dimension;
 		_grid = new int[_dimension, _dimension];
-		_generator.Initialize(_grid, dimension);
-		_generator.Generate();
-
-		_solver.Initialize(_grid, dimension);
+		_generator.Generate(_grid, dimension, Player.DefaultPosition);
+		_solution = _solver.Solve(_grid, dimension, Player.DefaultPosition, TargetCoordinates);
 	}
 
 	public void Draw()
@@ -43,8 +49,6 @@ public class Maze(IServiceProvider serviceProvider)
 		Guard.Against.Expression(d => d <= 0, _dimension, "The maze has not been generated.");
 
 		Console.Clear();
-
-		//DrawBorder();
 
 		CursorToGridStart();
 
@@ -70,9 +74,9 @@ public class Maze(IServiceProvider serviceProvider)
 
 	public void DrawSolution()
 	{
-		var solutionGrid = _solver.Solve();
+		Guard.Against.Null(_solution, nameof(_solution), "The maze must be first generated and solved.");
 
-		foreach ((int row, int column) coords in solutionGrid)
+		foreach ((int row, int column) coords in _solution)
 		{
 			CursorToGridCoordinates((coords.row, coords.column));
 
@@ -96,7 +100,7 @@ public class Maze(IServiceProvider serviceProvider)
 
 	public void DrawFinish()
 	{
-		CursorToGridCoordinates(FinishCoordinates);
+		CursorToGridCoordinates(TargetCoordinates);
 		Console.ForegroundColor = ColorFinish;
 		Console.Write(IconFinish);
 
@@ -151,7 +155,9 @@ public class Maze(IServiceProvider serviceProvider)
 	private bool MovePlayer(Player player, int row, int column)
 	{
 		Guard.Against.Null(player);
-		
+		Guard.Against.Null(_grid, nameof(_grid), "The maze must be first generated.");
+
+
 		// check grid boundaries and whether the new coordinate is empty
 		if (row < 0 || column < 0 || row >= _dimension || column >= _dimension || _grid[row, column] != Constants.Empty)
 		{
@@ -169,8 +175,10 @@ public class Maze(IServiceProvider serviceProvider)
 		return true;
 	}
 
-	public bool IsAtFinish(Player player)
+	public bool IsAtTarget(Player player)
 	{
-		return player.Coordinates.row == FinishCoordinates.row && player.Coordinates.column == FinishCoordinates.column;
+		Guard.Against.Null(player);
+
+		return player.Coordinates.row == TargetCoordinates.row && player.Coordinates.column == TargetCoordinates.column;
 	}
 }
