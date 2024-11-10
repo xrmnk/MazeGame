@@ -21,6 +21,12 @@ public class MazeTests
 			.BuildServiceProvider();
 	}
 
+	[TearDown]
+	public void TearDown()
+	{
+		((IDisposable)_sp).Dispose();
+	}
+
 	[Test]
 	public void Maze_WhenPlayerAtTarget_AndMazeNotGenerated_ThrowsArgumentException()
 	{
