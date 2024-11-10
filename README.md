@@ -6,11 +6,11 @@ Uses recursive backtracker algorithm for generation and depth-first search for s
 
 ## Dependencies justification
 
-`Ardalis.GuardClauses` - validation, argument checking
-`Microsoft.Extensions.DependencyInjection` - used to allow introduction of alternative algorithms, plus logging
-`Microsoft.Extensions.Logging` - for logging to the EventLog
-`NSubstitute` - used for mocking in unit tests
-`NUnit` - test framework of choice
+- `Ardalis.GuardClauses` - validation, argument checking
+- `Microsoft.Extensions.DependencyInjection` - used to allow introduction of alternative algorithms, plus logging
+- `Microsoft.Extensions.Logging` - for logging to the EventLog
+- `NSubstitute` - used for mocking in unit tests
+- `NUnit` - test framework of choice
 
 ## Drawbacks
 
